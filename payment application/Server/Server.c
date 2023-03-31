@@ -10,6 +10,7 @@ EN_serverError_t _isAmountAvailable ;
 EN_serverError_t _saveTransaction ;
 ST_accountsDB_t *p_account = accountsDB;
 ST_transaction_t *p_trancNum = transaction;
+uint8_t t = 0;
 /*** we need (ST_cardData_t  ST_terminalData_t
 /******************************************* EN_transState_t**********************************************/
 
@@ -534,14 +535,15 @@ EN_serverError_t saveTransaction(ST_transaction_t *transData)
 
     }
     listSavedTransactions();
-    p_trancNum=transaction+1;
+    t++;
+    p_trancNum=transaction+t;
     return SERVER_OK ;
 }
 
 // implement test function here
 void saveTransactionTesr(void)
 {
-        uint8_t  actualResult ;
+    uint8_t  actualResult ;
 
 
     ST_transaction_t *p_user1;
@@ -562,22 +564,22 @@ void saveTransactionTesr(void)
         5
     };
     p_user1=&user1;
-
- saveTransaction(p_user1);
-/*
-    printf("Tester :   \n");
-    printf( "Function Name: isAmountAvailableTest \n\n");
-
-    printf("--------------------------------------------------------------\n");
-    printf("Test Case 1: \n");
-    printf("    Input Data:   \n");
-    printf("        - pointer to ST_transaction_t has the following data { {kareem magdy, 11111111112222222222,02/24},{2500,1000,02/23},APPROVED,5 } \n");
-    printf("    Expected Result: SERVER_OK and user transaction data saved in database\n");
     _isValidAccount = ACCOUNT_NOT_FOUND;
-    actualResult= saveTransaction(p_user1);
-    if(actualResult == SERVER_OK)  printf("\n    Actual Result:   SERVER_OK \n ");
+    saveTransaction(p_user1);
+    /*
+        printf("Tester :   \n");
+        printf( "Function Name: isAmountAvailableTest \n\n");
 
-*/
+        printf("--------------------------------------------------------------\n");
+        printf("Test Case 1: \n");
+        printf("    Input Data:   \n");
+        printf("        - pointer to ST_transaction_t has the following data { {kareem magdy, 11111111112222222222,02/24},{2500,1000,02/23},APPROVED,5 } \n");
+        printf("    Expected Result: SERVER_OK and user transaction data saved in database\n");
+        _isValidAccount = ACCOUNT_NOT_FOUND;
+        actualResult= saveTransaction(p_user1);
+        if(actualResult == SERVER_OK)  printf("\n    Actual Result:   SERVER_OK \n ");
+
+    */
 
 
 
@@ -599,19 +601,22 @@ void saveTransactionTesr(void)
     };
     p_user2=&user2;
 
-
+/*
     printf("--------------------------------------------------------------\n");
     printf("Test Case 2: \n");
     printf("    Input Data:   \n");
     printf("        - pointer to ST_transaction_t has the following data { {kareem magdy, 11111111112222222222,02/24},{2500,1000,02/23},APPROVED,5 } \n");
     printf("    Expected Result: SERVER_OK and user transaction data saved in database\n");
     _isValidAccount = APPROVED;
+    */
+        _isValidAccount = APPROVED;
 
     _isBlockedAccount=BLOCKED_ACCOUNT;
     actualResult= saveTransaction(p_user2);
+    /*
     if(actualResult == SERVER_OK)  printf("\n    Actual Result:   SERVER_OK \n ");
     printf("--------------------------------------------------------------\n");
-
+*/
 }
 
 
@@ -649,8 +654,10 @@ void listSavedTransactions(void)
 
     printf("-------------------------------------\n");
     printf("Card Holder Name : ");
-    for(uint8_t i =0 ; i<1 ; i++)
+    for(uint8_t i =0 ; i<2 ; i++)
     {
+                p_trancNum=transaction+i;
+
         for(uint8_t cardHolderName = 0 ; cardHolderName<25 ; cardHolderName++)
         {
             printf("%c",p_trancNum->cardHolderData.cardHolderName[cardHolderName]) ;
@@ -704,7 +711,6 @@ void listSavedTransactions(void)
 
 
         printf("\n-------------------------------------\n");
-        p_trancNum=transaction+1;
     }
 
 
