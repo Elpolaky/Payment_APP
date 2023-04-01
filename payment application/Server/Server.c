@@ -316,7 +316,7 @@ EN_serverError_t isBlockedAccount(ST_accountsDB_t *accountRefrence)
 
 
 // implement test function here
-void isBlockedAccountTest()
+void isBlockedAccountTest(void)
 {
     uint8_t  actualResult ;
     ST_cardData_t user1 =
@@ -392,7 +392,7 @@ EN_serverError_t isAmountAvailable(ST_terminalData_t *termData, ST_accountsDB_t 
 
 // implement test function here
 
-void isAmountAvailableTest()
+void isAmountAvailableTest(void)
 {
     uint8_t  actualResult ;
     ST_terminalData_t t_user1 =
