@@ -11,6 +11,7 @@ EN_serverError_t _saveTransaction ;
 ST_accountsDB_t *p_account = accountsDB;
 ST_transaction_t *p_trancNum = transaction;
 uint8_t t = 0;
+uint8_t trans_num=0;
 /*** we need (ST_cardData_t  ST_terminalData_t
 /******************************************* EN_transState_t**********************************************/
 
@@ -470,7 +471,7 @@ void isAmountAvailableTest()
 EN_serverError_t saveTransaction(ST_transaction_t *transData)
 {
 
-    //carddata
+//Card data
     for(uint8_t cardHolderName = 0 ; cardHolderName<25 ; cardHolderName++)
     {
         p_trancNum->cardHolderData.cardHolderName[cardHolderName] = transData->cardHolderData.cardHolderName[cardHolderName];
@@ -531,7 +532,7 @@ EN_serverError_t saveTransaction(ST_transaction_t *transData)
     }
     else
     {
-        p_trancNum->transactionSequenceNumber = ((p_trancNum-1)->transactionSequenceNumber)++  ;
+        p_trancNum->transactionSequenceNumber =   p_trancNum->transactionSequenceNumber=((p_trancNum-1)->transactionSequenceNumber)+1;
 
     }
     listSavedTransactions();
@@ -581,10 +582,6 @@ void saveTransactionTesr(void)
 
     */
 
-
-
-
-
     ST_transaction_t *p_user2;
     ST_transaction_t user2=
     {
@@ -609,10 +606,33 @@ void saveTransactionTesr(void)
     printf("    Expected Result: SERVER_OK and user transaction data saved in database\n");
     _isValidAccount = APPROVED;
     */
-        _isValidAccount = APPROVED;
+    _isValidAccount = APPROVED;
 
     _isBlockedAccount=BLOCKED_ACCOUNT;
     actualResult= saveTransaction(p_user2);
+
+
+    ST_transaction_t *p_user3;
+    ST_transaction_t user3=
+    {
+
+        {
+            "Amr", "11111111112222222222","02/24"
+        },
+
+        {
+            90004,1000,"08/23"
+        },
+
+
+    };
+    p_user3=&user3;
+
+
+    _isValidAccount = APPROVED;
+
+    _isBlockedAccount=BLOCKED_ACCOUNT;
+    actualResult= saveTransaction(p_user3);
     /*
     if(actualResult == SERVER_OK)  printf("\n    Actual Result:   SERVER_OK \n ");
     printf("--------------------------------------------------------------\n");
@@ -654,9 +674,8 @@ void listSavedTransactions(void)
 
     printf("-------------------------------------\n");
     printf("Card Holder Name : ");
-    for(uint8_t i =0 ; i<2 ; i++)
-    {
-                p_trancNum=transaction+i;
+
+        p_trancNum=transaction+trans_num;
 
         for(uint8_t cardHolderName = 0 ; cardHolderName<25 ; cardHolderName++)
         {
@@ -711,8 +730,8 @@ void listSavedTransactions(void)
 
 
         printf("\n-------------------------------------\n");
-    }
 
+        trans_num++;
 
 
 
